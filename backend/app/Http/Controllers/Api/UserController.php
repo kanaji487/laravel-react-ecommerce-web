@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use OpenApi\Annotations as OA;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -26,17 +27,18 @@ class UserController extends Controller
      */
     public function list()
     {
-        try {
-            $users = \App\Models\User::all();
+        $user = DB::table("users")->select("id","name","email")->get();
+
+        if (empty($users)) {
             return response()->json([
-                'message' => 'success',
-                'data' => $users
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to retrieve users',
-                'error' => $e->getMessage()
-            ], 500);
+                'status_code' => 404,
+                'message' => 'Data not found'
+            ], 404);
         }
+
+        return response()->json([
+            'status_code' => 200,
+            'data' => $users
+        ]);
     }
 }

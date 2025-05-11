@@ -1,6 +1,7 @@
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
+import { Card } from '@/components/ui/card';
 
 interface AuthLayoutProps {
     name?: string;
@@ -12,7 +13,7 @@ export default function AuthSimpleLayout({ children, title, description }: Props
     return (
         <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
             <div className="w-full max-w-sm">
-                <div className="flex flex-col gap-8">
+                <Card className='px-4'>
                     <div className="flex flex-col items-center gap-4">
                         <Link href={route('home')} className="flex flex-col items-center gap-2 font-medium">
                             <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
@@ -27,7 +28,7 @@ export default function AuthSimpleLayout({ children, title, description }: Props
                         </div>
                     </div>
                     {children}
-                </div>
+                </Card>
             </div>
         </div>
     );
