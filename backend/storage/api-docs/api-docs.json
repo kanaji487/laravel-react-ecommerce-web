@@ -1,0 +1,43 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel REST API",
+        "description": "Laravel REST API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/user/list": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User list",
+                "operationId": "27ffe0ec194e07078beae4a3e03bfe28",
+                "responses": {
+                    "200": {
+                        "description": "user list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "pong"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "User",
+            "description": "User"
+        }
+    ]
+}
