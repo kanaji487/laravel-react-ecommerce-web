@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Content\ContentController;
+use App\Http\Controllers\Content\ProductsController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -14,6 +15,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('content', [ContentController::class, 'list'])->name('content.list');
+
+    Route::get('content/products', [ProductsController::class, 'list'])->name('products.list');
 });
 
 require __DIR__.'/settings.php';

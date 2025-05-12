@@ -1,6 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { PackageSearch } from 'lucide-react';
 import { 
     Card,
@@ -16,11 +17,18 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const ContentListPage = () => {
+    const handleClick = () => {
+        router.visit("/content/products")
+    }
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head title="Content" />
         <div className='flex flex-row justify-between items-center p-4'>
-            <Card className='w-[150px] cursor-pointer'>
+            <Card 
+                className='w-[150px] cursor-pointer' 
+                onClick={handleClick}
+            >
                 <CardHeader>
                     <PackageSearch className="w-full h-full" />
                 </CardHeader>
