@@ -17,6 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('content', [ContentController::class, 'list'])->name('content.list');
 
     Route::get('content/products', [ProductsController::class, 'list'])->name('products.list');
+    Route::get('content/products/form', [ProductsController::class, 'form'])->name('products.form');
 });
 
 require __DIR__.'/settings.php';

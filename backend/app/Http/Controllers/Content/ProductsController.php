@@ -21,4 +21,9 @@ class ProductsController extends Controller
             'products' => $products,
         ]);
     }
+
+    public function form(Request $request): Response
+    {
+        return Inertia::render('content/products/form');
+    }
 }

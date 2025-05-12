@@ -79,7 +79,7 @@ const ProductsListPage = () => {
           placeholder="Search..."
           className="border border-gray-300 rounded px-3 py-2 w-full max-w-xs"
         />
-        <Button>Create</Button>
+        <Button onClick={() => router.visit('/content/products/form')}>Create</Button>
       </div>
       <div>
         <div className='relative w-full overflow-x-auto p-4'>
