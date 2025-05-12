@@ -15,20 +15,7 @@
                 "operationId": "27ffe0ec194e07078beae4a3e03bfe28",
                 "responses": {
                     "200": {
-                        "description": "user list",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "pong"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "user list"
                     }
                 }
             }

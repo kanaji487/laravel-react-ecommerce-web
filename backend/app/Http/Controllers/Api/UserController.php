@@ -18,16 +18,13 @@ class UserController extends Controller
      *     tags={"User"},
      *     @OA\Response(
      *         response=200,
-     *         description="user list",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="pong")
-     *         )
+     *         description="user list"
      *     )
      * )
      */
     public function list()
     {
-        $user = DB::table("users")->select("id","name","email")->get();
+        $users = DB::table("users")->select("id","name","email")->get();
 
         if (empty($users)) {
             return response()->json([
@@ -38,6 +35,7 @@ class UserController extends Controller
 
         return response()->json([
             'status_code' => 200,
+            'message' => "Data found",
             'data' => $users
         ]);
     }
