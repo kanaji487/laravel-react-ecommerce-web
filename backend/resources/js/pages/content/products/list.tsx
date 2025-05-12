@@ -27,10 +27,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type Product = {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
+  id: number;
+  main_image: string;
+  name: string;
+  description: string;
+  price: number;
+  created_at: string;
+  created_by: string;
+  updated_at: string;
+  updated_by: string;
+  obj_lang: string;
+  obj_status: string;
 };
 
 type PaginatedProducts = {
@@ -86,9 +93,16 @@ const ProductsListPage = () => {
           <table className='min-w-[1000px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-2 border-white'>
             <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
               <tr>
+                <th scope='col' className='px-6 py-3'>Image</th>
                 <th scope='col' className='px-6 py-3'>Name</th>
                 <th scope='col' className='px-6 py-3'>Description</th>
                 <th scope='col' className='px-6 py-3'>Price</th>
+                <th scope='col' className='px-6 py-3'>Created at</th>
+                <th scope='col' className='px-6 py-3'>Created by</th>
+                <th scope='col' className='px-6 py-3'>Updated at</th>
+                <th scope='col' className='px-6 py-3'>Updated by</th>
+                <th scope='col' className='px-6 py-3'>Language</th>
+                <th scope='col' className='px-6 py-3'>Status</th>
                 <th scope='col' className='px-6 py-3'>Action</th>
               </tr>
             </thead>
@@ -99,10 +113,45 @@ const ProductsListPage = () => {
                     key={product.id} 
                     className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200'
                   >
-                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>{product.name}</th>
-                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>{product.description}</th>
-                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>{product.price}</th>
-                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>{product.price}</th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.main_image && (
+                        <img
+                          src={`/storage/${product.main_image}`}
+                          alt={product.name}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                      )}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.name}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.description}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.price}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.created_at}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.created_by}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.updated_at}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.updated_by}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.obj_lang}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.obj_status}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.price}
+                    </th>
                   </tr>
                 ))
               ) : (
