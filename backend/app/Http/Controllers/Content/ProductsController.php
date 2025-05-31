@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -61,5 +62,36 @@ class ProductsController extends Controller
         return Inertia::render('content/products/edit', [
             'product' => $product
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $validated = $request->validate([
+            'main_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'nullable|string',
+            'obj_lang' => 'required|in:tha,eng', 
+            'obj_status' => 'required|in:publish,unpublish',
+        ]);
+
+        if ($request->hasFile('main_image')) {
+
+            if ($product->main_image && Storage::disk('public')->exists($products->main_image)) {
+                Storage::disk('public')->delete($product->main_image);
+            }
+
+            $image = $request->file('main_image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imagePath = $image->storeAs('products', $imageName, 'public');
+            $validated['main_image'] = $imagePath;
+        }
+
+        $validated['updated_by'] = Auth::id();
+        $product->update($validated);
+
+        return Redirect::to('/content/products')->with('success', 'Category updated successfully.');
     }
 }
