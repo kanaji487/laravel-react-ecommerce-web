@@ -6,6 +6,20 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/products/list": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Products list",
+                "operationId": "5d999bab0c080922f21c0498b4ce5baa",
+                "responses": {
+                    "200": {
+                        "description": "products list"
+                    }
+                }
+            }
+        },
         "/api/user/list": {
             "get": {
                 "tags": [
@@ -22,6 +36,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Products",
+            "description": "Products"
+        },
         {
             "name": "User",
             "description": "User"
