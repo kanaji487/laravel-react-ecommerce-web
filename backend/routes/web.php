@@ -20,6 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('content/products', [ProductsController::class, 'list'])->name('products.list');
     Route::get('content/products/form', [ProductsController::class, 'form'])->name('products.form');
     Route::post('content/products/form', [ProductsController::class, 'create'])->name('products.create');
+    Route::get('/content/products/{id}/edit', [ProductsController::class, 'edit'])->name('products.edit');
 
     Route::get('content/product_category', [ProductCategoryController::class, 'list'])->name('product_category.list');
 });

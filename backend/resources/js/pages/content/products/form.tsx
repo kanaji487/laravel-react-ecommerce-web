@@ -48,15 +48,6 @@ const ProductsFormPage = () => {
         obj_status: ''
     });
 
-    // const { data, setData, post, processing, errors } = useForm({
-    //     main_image: File | null,
-    //     name: '',
-    //     description: '',
-    //     price: '',
-    //     obj_lang: '',
-    //     obj_status: ''
-    // });
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         post('/content/products/form')
@@ -67,7 +58,7 @@ const ProductsFormPage = () => {
         <Head title="Form" />
         
         <div className="max-w-2xl mx-4 space-y-6 mt-8">
-                <h1 className="text-2xl font-bold">Create New Product</h1>
+            <h1 className="text-2xl font-bold">Create New Product</h1>
                 <form 
                     onSubmit={handleSubmit} 
                     className="space-y-4"

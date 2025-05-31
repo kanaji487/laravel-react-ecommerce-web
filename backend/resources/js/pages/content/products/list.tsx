@@ -14,6 +14,17 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { 
+    EllipsisVertical,
+    Pencil,
+    Trash2,
+    Eye
+} from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -150,7 +161,32 @@ const ProductsListPage = () => {
                       {product.obj_status}
                     </th>
                     <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                      {product.price}
+                      <Popover>
+                        <PopoverTrigger>
+                          <EllipsisVertical className="cursor-pointer" />
+                        </PopoverTrigger>
+                        <PopoverContent className='w-[10rem]'>
+                          <button
+                            onClick={() => router.visit(`/content/products/${product.id}/edit`)}
+                            className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
+                          >
+                            <Pencil className="w-4 h-4" />
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            <span>Delete</span>
+                          </button>
+                          <button
+                            className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
+                          >
+                            <Eye className="w-4 h-4" />
+                            <span>Quick view</span>
+                          </button>
+                        </PopoverContent>
+                      </Popover>
                     </th>
                   </tr>
                 ))

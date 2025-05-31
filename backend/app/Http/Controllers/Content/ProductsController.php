@@ -53,4 +53,13 @@ class ProductsController extends Controller
             return Redirect::back()->withInput()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+
+        return Inertia::render('content/products/edit', [
+            'product' => $product
+        ]);
+    }
 }
