@@ -27,13 +27,24 @@ const ContentListPage = () => {
         <div className='flex flex-row justify-between items-center p-4'>
             <Card 
                 className='w-[150px] cursor-pointer' 
-                onClick={handleClick}
+                onClick={() => router.visit("/content/products")}
             >
                 <CardHeader>
                     <PackageSearch className="w-full h-full" />
                 </CardHeader>
                 <CardContent className="text-center">
                     <h1>Products</h1>
+                </CardContent>
+            </Card>
+            <Card 
+                className='w-[150px] cursor-pointer' 
+                onClick={() => router.visit("/content/product_category")}
+            >
+                <CardHeader>
+                    <PackageSearch className="w-full h-full" />
+                </CardHeader>
+                <CardContent className="text-center">
+                    <h1>Product Category</h1>
                 </CardContent>
             </Card>
         </div>

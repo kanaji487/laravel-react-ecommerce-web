@@ -16,7 +16,7 @@ class ProductsController extends Controller
 {
     public function list(Request $request): Response
     {
-        $products = DB::table("products")->select("id", "main_image" ,"name", "description", "price", "created_by", "updated_by", "created_at", "updated_at", "obj_lang", "obj_status")->orderBy('created_at', 'desc')->paginate(15);;
+        $products = DB::table("products")->select("id", "main_image" ,"name", "description", "price", "created_by", "updated_by", "created_at", "updated_at", "obj_lang", "obj_status")->orderBy('created_at', 'desc')->paginate(15);
 
         return Inertia::render('content/products/list', [
             'products' => $products,
