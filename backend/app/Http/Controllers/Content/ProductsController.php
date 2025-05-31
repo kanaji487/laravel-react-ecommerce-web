@@ -92,6 +92,14 @@ class ProductsController extends Controller
         $validated['updated_by'] = Auth::id();
         $product->update($validated);
 
-        return Redirect::to('/content/products')->with('success', 'Category updated successfully.');
+        return Redirect::to('/content/products')->with('success', 'Product updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return back()->with('message', 'Product deleted successfully.');
     }
 }

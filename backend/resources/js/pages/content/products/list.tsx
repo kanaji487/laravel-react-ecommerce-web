@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { 
   usePage,
   router
@@ -19,6 +20,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetClose
+} from "@/components/ui/sheet"
 import { 
     EllipsisVertical,
     Pencil,
@@ -60,6 +69,8 @@ type PaginatedProducts = {
 };
 
 const ProductsListPage = () => {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const { products } = usePage().props as unknown as {
     products: PaginatedProducts;
@@ -69,6 +80,17 @@ const ProductsListPage = () => {
     if (url) {
       router.visit(url);
     }
+  };
+
+  const handleDelete = (products: Product) => {
+    router.delete(`/content/products/${products.id}`, {
+      preserveScroll: true,
+    });
+  };
+
+  const handleQuickView = (product: Product) => {
+    setSelectedProduct(product);
+    setIsSheetOpen(true);
   };
 
   const renderPageNumbers = () => {
@@ -174,12 +196,14 @@ const ProductsListPage = () => {
                             <span>Edit</span>
                           </button>
                           <button
+                            onClick={() => handleDelete(product)}
                             className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
                           >
                             <Trash2 className="w-4 h-4" />
                             <span>Delete</span>
                           </button>
                           <button
+                            onClick={() => handleQuickView(product)}
                             className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
                           >
                             <Eye className="w-4 h-4" />
@@ -221,6 +245,31 @@ const ProductsListPage = () => {
           </div>
         </div>
       </div>
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+          <SheetHeader>
+            <SheetTitle>{selectedProduct?.name}</SheetTitle>
+            <SheetDescription>
+              Quick view of product details
+            </SheetDescription>
+          </SheetHeader>
+          <div className="mt-4 mx-4 space-y-4">
+            {selectedProduct?.main_image && (
+              <img
+                src={`/storage/${selectedProduct.main_image}`}
+                alt={selectedProduct.name}
+                className="w-full h-48 object-cover rounded"
+              />
+            )}
+            <p><strong>Description:</strong> {selectedProduct?.description}</p>
+            <p><strong>Price:</strong> ${selectedProduct?.price}</p>
+            <p><strong>Status:</strong> {selectedProduct?.obj_status}</p>
+            <p><strong>Language:</strong> {selectedProduct?.obj_lang}</p>
+            <p><strong>Created by:</strong> {selectedProduct?.created_by}</p>
+            <p><strong>Created at:</strong> {selectedProduct?.created_at}</p>
+          </div>
+        </SheetContent>
+      </Sheet>
     </AppLayout>
   )
 }
