@@ -3,7 +3,8 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { 
     Head, 
-    useForm 
+    useForm,
+    router
 } from '@inertiajs/react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -63,7 +64,7 @@ const ProductEditPage = ({ product }: { product: any }) => {
             <form
                 className="space-y-4"
                 onSubmit={handleSubmit}
-                method="PUT"
+                method="POST"
             >
                 <div>
                     <Label htmlFor='main_image'>Main image</Label>

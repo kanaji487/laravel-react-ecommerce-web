@@ -25,15 +25,17 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
-  SheetClose
-} from "@/components/ui/sheet"
+  SheetTitle
+} from "@/components/ui/sheet";
+import { Badge } from "@/components/ui/badge"
 import { 
     EllipsisVertical,
     Pencil,
     Trash2,
     Eye
 } from 'lucide-react';
+import ThaiFlag from "../../../../../public/thailand.png";
+import EngFlag from "../../../../../public/english.png";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -176,11 +178,25 @@ const ProductsListPage = () => {
                     <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
                       {product.updated_by}
                     </th>
-                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                      {product.obj_lang}
+                    <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      {product.obj_lang === "tha" ? (
+                        <Badge className="flex items-center gap-2 bg-blue-100 text-blue-800">
+                          <img src={ThaiFlag} alt="thai" width={30} height={20} />
+                        </Badge>
+                      ) : product.obj_lang === "eng" ? (
+                        <Badge className="flex items-center gap-2 bg-red-100 text-red-800">
+                          <img src={EngFlag} alt="thai" width={30} height={20} />
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary">Unknown</Badge>
+                      )}
                     </th>
                     <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                      {product.obj_status}
+                      {product.obj_status === "publish" ? (
+                        <Badge className="bg-green-500 text-white hover:bg-green-600">Publish</Badge>
+                      ) : (
+                        <Badge className="bg-gray-500 text-white hover:bg-gray-600">Unpublish</Badge>
+                      )}
                     </th>
                     <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
                       <Popover>

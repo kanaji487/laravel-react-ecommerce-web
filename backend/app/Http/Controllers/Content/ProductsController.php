@@ -17,7 +17,24 @@ class ProductsController extends Controller
 {
     public function list(Request $request): Response
     {
-        $products = DB::table("products")->select("id", "main_image" ,"name", "description", "price", "created_by", "updated_by", "created_at", "updated_at", "obj_lang", "obj_status")->orderBy('created_at', 'desc')->paginate(15);
+        $products = DB::table("products")
+        ->select(
+            "products.id", 
+            "products.main_image", 
+            "products.name", 
+            "products.description", 
+            "products.price", 
+            "created_users.name as created_by",
+            "updated_users.name as updated_by", 
+            "products.created_at", 
+            "products.updated_at", 
+            "products.obj_lang", 
+            "products.obj_status"
+        )
+        ->leftJoin('users as created_users', 'products.created_by', '=', 'created_users.id')
+        ->leftJoin('users as updated_users', 'products.updated_by', '=', 'updated_users.id')
+        ->orderBy('products.created_at', 'desc')
+        ->paginate(15);
 
         return Inertia::render('content/products/list', [
             'products' => $products,
@@ -68,25 +85,33 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $validated = $request->validate([
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'nullable|string',
-            'obj_lang' => 'required|in:tha,eng', 
-            'obj_status' => 'required|in:publish,unpublish',
-        ]);
+        if ($request->hasFile('main_image')) {
+            $validated = $request->validate([
+                'main_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'nullable|string',
+                'obj_lang' => 'required|string',
+                'obj_status' => 'required|string',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'nullable|string',
+                'obj_lang' => 'required|string',
+                'obj_status' => 'required|string',
+            ]);
+        }
 
         if ($request->hasFile('main_image')) {
 
-            if ($product->main_image && Storage::disk('public')->exists($products->main_image)) {
+            if ($product->main_image && Storage::disk('public')->exists($product->main_image)) {
                 Storage::disk('public')->delete($product->main_image);
             }
 
-            $image = $request->file('main_image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imagePath = $image->storeAs('products', $imageName, 'public');
-            $validated['main_image'] = $imagePath;
+            $path = $request->file('main_image')->store('products', 'public');
+            $validated['main_image'] = $path;
         }
 
         $validated['updated_by'] = Auth::id();
