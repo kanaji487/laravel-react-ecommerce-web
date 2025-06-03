@@ -19,7 +19,7 @@ class ProductCategoryController extends Controller
         $product_category = DB::table("product_category")->select("id","name","description","created_by","updated_by", "created_at", "updated_at", "obj_lang", "obj_status")->orderBy('created_at', 'desc')->paginate(15);
 
         return Inertia::render('content/product_category/list', [
-            'product_category' => $product_category,
+            'productCategory' => $product_category,
         ]);
     }
 
