@@ -24,7 +24,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/content/products/{id}', [ProductsController::class, 'update'])->name('products.update');
     Route::delete('/content/products/{id}', [ProductsController::class, 'destroy'])->name('products.delete');
 
-    Route::get('content/product_category', [ProductCategoryController::class, 'list'])->name('product_category.list');
+    Route::get('/content/product_category', [ProductCategoryController::class, 'list'])->name('product_category.list');
+    Route::get('/content/product_category/form', [ProductCategoryController::class, 'form'])->name('product_category.form');
 });
 
 require __DIR__.'/settings.php';

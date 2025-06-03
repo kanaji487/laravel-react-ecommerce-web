@@ -22,4 +22,9 @@ class ProductCategoryController extends Controller
             'product_category' => $product_category,
         ]);
     }
+
+    public function form(Request $request): Response
+    {
+        return Inertia::render('content/product_category/form');
+    }
 }
