@@ -27,4 +27,23 @@ class ProductCategoryController extends Controller
     {
         return Inertia::render('content/product_category/form');
     }
+
+    public function create(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'obj_lang' => 'nullable|string|max:10',
+            'obj_status' => 'nullable|string|max:50'
+        ]);
+
+        $validated['created_by'] = Auth::id();
+
+        try {
+            ProductCategory::create($validated);
+            return Redirect::to('/content/product_category')->with('success', 'Product category created successfully!');
+        } catch (\Exception $e) {
+            return Redirect::back()->withInput()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
 }
