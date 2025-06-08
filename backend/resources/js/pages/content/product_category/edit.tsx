@@ -1,4 +1,3 @@
-import React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { 
@@ -8,7 +7,6 @@ import {
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -16,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,98 +22,61 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/content'
     },
     {
-      title: 'Products',
-      href: '/content/products'
+      title: 'Product category',
+      href: '/content/product_category'
     },
     {
         title: 'Edit',
-        href: '/content/products/edit'
+        href: '/content/product_category/edit'
     }
 ];
 
-const ProductEditPage = ({ product }: { product: any }) => {
+const ProductCategoryEditPage = ({ product_category }: { product_category: any }) => {
+
     const { data, setData, post, processing, errors } = useForm({
-        name: product.name || '',
-        description: product.description || '',
-        price: product.price || '',
-        main_image: product.main_image || '',
-        obj_lang: product.obj_lang || '',
-        obj_status: product.obj_status || ''
+        name: product_category.name || '',
+        description: product_category.description || '',
+        obj_lang: product_category.obj_lang || '',
+        obj_status: product_category.obj_status || ''
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(`/content/products/${product.id}`);
+        post(`/content/product_category/${product_category.id}`);
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setData('main_image', file);
-        }
-    };
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head title="Edit" />
         <div className="max-w-2xl mx-4 space-y-6 mt-8">
-            <h1 className="text-2xl font-bold">Edit Product</h1>
+            <h1 className="text-2xl font-bold">Edit product category</h1>
             <form
                 className="space-y-4"
                 onSubmit={handleSubmit}
                 method="POST"
             >
-                <div>
-                    <Label htmlFor='main_image'>Main image</Label>
-                    {data.main_image && (
-                        <div className="mb-2">
-                            <img 
-                                src={`/storage/${product.main_image}`}
-                                alt="Current main image" 
-                                className="w-32 h-32 object-cover rounded-md border"
-                            />
-                        </div>
-                    )}
-                    <Input 
-                        type='file'
-                        id='main_image'
-                        onChange={handleFileChange}
-                    />
-                </div>
-                <div>
+                <div className='flex flex-col space-y-2'>
                     <Label htmlFor='name'>Name</Label>
                     <Input 
-                        type='text'
                         id='name'
+                        type='text'
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
+                        required
                     />
                     {errors.name && (
                         <p className="text-sm text-red-500 mt-1">{errors.name}</p>
                     )}
                 </div>
-                <div>
+                <div className='flex flex-col space-y-2'>
                     <Label htmlFor='description'>Description</Label>
-                    <Textarea 
-                        id='description'
+                    <Textarea
+                        id="description"
+                        className="mt-1"
                         value={data.description}
                         onChange={(e) => setData('description', e.target.value)}
                     />
-                    {errors.description && (
-                        <p className="text-sm text-red-500 mt-1">{errors.description}</p>
-                    )}
-                </div>
-                <div>
-                    <Label htmlFor='price'>Price</Label>
-                    <Input 
-                        type='text'
-                        id='price'
-                        value={data.price}
-                        onChange={(e) => setData('price', e.target.value)}
-                    />
-                    {errors.price && (
-                        <p className="text-sm text-red-500 mt-1">{errors.price}</p>
-                    )}
                 </div>
                 <div className="flex flex-col space-y-2">
                     <Label>Language</Label>
@@ -130,9 +92,6 @@ const ProductEditPage = ({ product }: { product: any }) => {
                             <SelectItem value="eng">ENG</SelectItem>
                         </SelectContent>
                     </Select>
-                    {errors.obj_lang && (
-                        <p className="text-sm text-red-500 mt-1">{errors.obj_lang}</p>
-                    )}
                 </div>
                 <div className="flex flex-col space-y-2">
                     <Label>Status</Label>
@@ -148,15 +107,12 @@ const ProductEditPage = ({ product }: { product: any }) => {
                             <SelectItem value="unpublish">Unpublish</SelectItem>
                         </SelectContent>
                     </Select>
-                    {errors.obj_status && (
-                        <p className="text-sm text-red-500 mt-1">{errors.obj_status}</p>
-                    )}
                 </div>
                 <Button 
-                    type='submit'
+                    type="submit"
                     disabled={processing}
                 >
-                    {processing ? 'Updating...' : 'Update'}
+                    {processing ? 'Updating' : 'Update'}
                 </Button>
             </form>
         </div>
@@ -164,4 +120,4 @@ const ProductEditPage = ({ product }: { product: any }) => {
   )
 }
 
-export default ProductEditPage;
+export default ProductCategoryEditPage;

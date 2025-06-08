@@ -46,4 +46,30 @@ class ProductCategoryController extends Controller
             return Redirect::back()->withInput()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
+    public function edit($id)
+    {
+        $product_category = ProductCategory::findOrFail($id);
+
+        return Inertia::render('content/product_category/edit', [
+            'product_category' => $product_category
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product_category = ProductCategory::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'obj_lang' => 'required|string',
+            'obj_status' => 'required|string',
+        ]);
+
+        $validated['updated_by'] = Auth::id();
+        $product_category->update($validated);
+
+        return Redirect::to('/content/product_category')->with('success', 'Product category updated successfully.');
+    }
 }

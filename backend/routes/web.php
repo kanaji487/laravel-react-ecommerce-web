@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/content/product_category', [ProductCategoryController::class, 'list'])->name('product_category.list');
     Route::get('/content/product_category/form', [ProductCategoryController::class, 'form'])->name('product_category.form');
     Route::post('/content/product_category/form', [ProductCategoryController::class, 'create'])->name('product_category.create');
+    Route::get('/content/product_category/{id}/edit', [ProductCategoryController::class, 'edit'])->name('product_category.edit');
+    Route::post('/content/product_category/{id}', [ProductCategoryController::class, 'update'])->name('product_category.update');
 });
 
 require __DIR__.'/settings.php';
