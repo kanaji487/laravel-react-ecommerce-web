@@ -16,7 +16,21 @@ class ProductCategoryController extends Controller
 {
     public function list(Request $request): Response
     {
-        $product_category = DB::table("product_category")->select("id","name","description","created_by","updated_by", "created_at", "updated_at", "obj_lang", "obj_status")->orderBy('created_at', 'desc')->paginate(15);
+        $product_category = DB::table("product_category")
+        ->select(
+            "product_category.id",
+            "product_category.name",
+            "product_category.description",
+            "created_users.name as created_by",
+            "updated_users.name as updated_by",
+            "product_category.created_at", 
+            "product_category.updated_at", 
+            "product_category.obj_lang", 
+            "product_category.obj_status")
+        ->leftJoin('users as created_users', 'product_category.created_by', '=', 'created_users.id')
+        ->leftJoin('users as updated_users', 'product_category.updated_by', '=', 'updated_users.id')
+        ->orderBy('product_category.created_at', 'desc')
+        ->paginate(15);
 
         return Inertia::render('content/product_category/list', [
             'productCategory' => $product_category,
