@@ -72,4 +72,12 @@ class ProductCategoryController extends Controller
 
         return Redirect::to('/content/product_category')->with('success', 'Product category updated successfully.');
     }
+
+    public function destroy($id)
+    {
+        $product_category = ProductCategory::findOrFail($id);
+        $product_category->delete();
+
+        return back()->with('message', 'Product category deleted successfully.');
+    }
 }

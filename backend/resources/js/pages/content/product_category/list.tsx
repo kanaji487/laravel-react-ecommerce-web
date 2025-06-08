@@ -83,7 +83,7 @@ const ProductCategoryListPage = () => {
     };
 
     const handleDelete = (product_category: ProductCategory) => {
-        router.delete(`/content/products/${product_category.id}`, {
+        router.delete(`/content/product_category/${product_category.id}`, {
           preserveScroll: true,
         });
     };
