@@ -6,6 +6,40 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/product_category/list": {
+            "get": {
+                "tags": [
+                    "Product category"
+                ],
+                "summary": "Product category list",
+                "operationId": "34091dc2180b0cef1616241eb4711981",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filter product categories by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Filter product categories by description",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "product category list"
+                    }
+                }
+            }
+        },
         "/api/products/list": {
             "get": {
                 "tags": [
@@ -36,6 +70,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Product category",
+            "description": "Product category"
+        },
         {
             "name": "Products",
             "description": "Products"
