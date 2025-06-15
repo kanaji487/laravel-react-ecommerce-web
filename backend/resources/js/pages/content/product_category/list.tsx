@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { 
   usePage,
   router
@@ -36,6 +36,15 @@ import {
 } from 'lucide-react';
 import ThaiFlag from "../../../../../public/thailand.png";
 import EngFlag from "../../../../../public/english.png";
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  ColumnDef,
+  SortingState,
+  getSortedRowModel,
+  getFilteredRowModel
+} from '@tanstack/react-table'
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -71,6 +80,8 @@ type PaginatedProductCategory = {
 const ProductCategoryListPage = () => {
     const [selectedProductCategory, setSelectedProductCategory] = useState<ProductCategory | null>(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [globalFilter, setGlobalFilter] = useState('');
 
     const { productCategory } = usePage().props as unknown as {
         productCategory: PaginatedProductCategory;
@@ -110,6 +121,199 @@ const ProductCategoryListPage = () => {
         return pages;
     };
 
+    const columns = useMemo<ColumnDef<ProductCategory>[]>(() => [
+        {
+            accessorKey: 'name',
+            header: ({ column }) => (
+                <div
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="cursor-pointer flex items-center gap-2"
+                >
+                    Name
+                    {column.getIsSorted() === 'asc' ? '⬆️' : column.getIsSorted() === 'desc' ? '⬇️' : ''}
+                </div>
+            ),
+            enableSorting: true,
+            enableGlobalFilter: true,
+            cell: info => info.getValue()
+        },
+        {
+            accessorKey: 'description',
+            header: ({ column }) => (
+                <div
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="cursor-pointer flex items-center gap-2"
+                >
+                    Description
+                    {column.getIsSorted() === 'asc' ? '⬆️' : column.getIsSorted() === 'desc' ? '⬇️' : ''}
+                </div>
+            ),
+            enableSorting: true,
+            enableGlobalFilter: true,
+            cell: info => info.getValue()
+        },
+        {
+            accessorKey: 'created_at',
+            header: ({ column }) => (
+                <div
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="cursor-pointer flex items-center gap-2"
+                >
+                    Created at
+                    {column.getIsSorted() === 'asc' ? '⬆️' : column.getIsSorted() === 'desc' ? '⬇️' : ''}
+                </div>
+            ),
+            enableSorting: true,
+            enableGlobalFilter: true,
+            cell: info => info.getValue()
+        },
+        {
+            accessorKey: 'created_by',
+            header: ({ column }) => (
+                <div
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="cursor-pointer flex items-center gap-2"
+                >
+                    Created by
+                    {column.getIsSorted() === 'asc' ? '⬆️' : column.getIsSorted() === 'desc' ? '⬇️' : ''}
+                </div>
+            ),
+            enableSorting: true,
+            enableGlobalFilter: true,
+            cell: info => info.getValue()
+        },
+        {
+            accessorKey: 'updated_at',
+            header: ({ column }) => (
+                <div
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="cursor-pointer flex items-center gap-2"
+                >
+                    Updated at
+                    {column.getIsSorted() === 'asc' ? '⬆️' : column.getIsSorted() === 'desc' ? '⬇️' : ''}
+                </div>
+            ),
+            enableSorting: true,
+            enableGlobalFilter: true,
+            cell: info => info.getValue()
+        },
+        {
+            accessorKey: 'updated_by',
+            header: ({ column }) => (
+                <div
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="cursor-pointer flex items-center gap-2"
+                >
+                    Updated by
+                    {column.getIsSorted() === 'asc' ? '⬆️' : column.getIsSorted() === 'desc' ? '⬇️' : ''}
+                </div>
+            ),
+            enableSorting: true,
+            enableGlobalFilter: true,
+            cell: info => info.getValue()
+        },
+        {
+            accessorKey: 'obj_lang',
+            header: ({ column }) => (
+                <div
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="cursor-pointer flex items-center gap-2"
+                >
+                    Language
+                    {column.getIsSorted() === 'asc' ? '⬆️' : column.getIsSorted() === 'desc' ? '⬇️' : ''}
+                </div>
+            ),
+            enableSorting: true,
+            enableGlobalFilter: true,
+            cell: ({ getValue }) => {
+                const lang = getValue() as string;
+                return lang === 'tha' ? (
+                    <Badge className="flex items-center gap-2 bg-blue-100 text-blue-800">
+                        <img src={ThaiFlag} alt="thai" width={30} height={20} />
+                    </Badge>
+                ) : lang === 'eng' ? (
+                    <Badge className="flex items-center gap-2 bg-red-100 text-red-800">
+                        <img src={EngFlag} alt="eng" width={30} height={20} />
+                    </Badge>
+                ) : (
+                    <Badge variant="secondary">Unknown</Badge>
+                );
+            }
+        },
+        {
+            accessorKey: 'obj_status',
+            header: ({ column }) => (
+                <div
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="cursor-pointer flex items-center gap-2"
+                >
+                    Status
+                    {column.getIsSorted() === 'asc' ? '⬆️' : column.getIsSorted() === 'desc' ? '⬇️' : ''}
+                </div>
+            ),
+            enableSorting: true,
+            enableGlobalFilter: true,
+            cell: ({ getValue }) => {
+                return getValue() === 'publish' ? (
+                    <Badge className="bg-green-500 text-white">Publish</Badge>
+                ) : (
+                    <Badge className="bg-gray-500 text-white">Unpublish</Badge>
+                );
+            }
+        },
+        {
+            id: 'actions',
+            header: 'Action',
+            cell: ({ row }) => {
+                const item = row.original;
+                return (
+                <Popover>
+                    <PopoverTrigger>
+                        <EllipsisVertical className="cursor-pointer" />
+                    </PopoverTrigger>
+                    <PopoverContent className='w-[10rem]'>
+                        <button
+                            onClick={() => router.visit(`/content/product_category/${item.id}/edit`)}
+                            className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
+                        >
+                            <Pencil className="w-4 h-4" />
+                            <span>Edit</span>
+                        </button>
+                        <button
+                            onClick={() => handleDelete(item)}
+                            className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                            <span>Delete</span>
+                        </button>
+                        <button
+                            onClick={() => handleQuickView(item)}
+                            className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
+                        >
+                            <Eye className="w-4 h-4" />
+                            <span>Quick view</span>
+                        </button>
+                    </PopoverContent>
+                </Popover>
+                );
+            },
+        },
+    ], []);
+
+    const table = useReactTable({
+        data: productCategory.data,
+        columns,
+        state: {
+            sorting,
+            globalFilter,
+        },
+        onSortingChange: setSorting,
+        onGlobalFilterChange: setGlobalFilter,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+    });
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head title="Product category" />
@@ -117,109 +321,38 @@ const ProductCategoryListPage = () => {
             <input
                 type="text"
                 placeholder="Search..."
+                value={globalFilter}
+                onChange={e => setGlobalFilter(e.target.value)}
                 className="border border-gray-300 rounded px-3 py-2 w-full max-w-xs"
             />
             <Button onClick={() => router.visit('/content/product_category/form')}>Create</Button>
         </div>
         <div className='relative w-full overflow-x-auto p-4'>
-            <table className='min-w-[1000px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-2 border-white'>
-                <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
-                    <tr>
-                        <th scope='col' className='px-6 py-3'>Name</th>
-                        <th scope='col' className='px-6 py-3'>Description</th>
-                        <th scope='col' className='px-6 py-3'>Created at</th>
-                        <th scope='col' className='px-6 py-3'>Created by</th>
-                        <th scope='col' className='px-6 py-3'>Updated At</th>
-                        <th scope='col' className='px-6 py-3'>Updated by</th>
-                        <th scope='col' className='px-6 py-3'>Language</th>
-                        <th scope='col' className='px-6 py-3'>Status</th>
-                        <th scope='col' className='px-6 py-3'>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {productCategory.data.length > 0 ? (
-                        productCategory.data.map(category => (
-                            <tr 
-                                key={category.id}
-                                className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200'
-                            >
-                                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                                    {category.name}
-                                </th>
-                                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                                    {category.description}
-                                </th>
-                                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                                    {category.created_at}
-                                </th>
-                                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                                    {category.created_by}
-                                </th>
-                                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                                    {category.updated_at}
-                                </th>
-                                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                                    {category.updated_by}
-                                </th>
-                                <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {category.obj_lang === "tha" ? (
-                                        <Badge className="flex items-center gap-2 bg-blue-100 text-blue-800">
-                                            <img src={ThaiFlag} alt="thai" width={30} height={20} />
-                                        </Badge>
-                                    ) : category.obj_lang === "eng" ? (
-                                        <Badge className="flex items-center gap-2 bg-red-100 text-red-800">
-                                            <img src={EngFlag} alt="thai" width={30} height={20} />
-                                        </Badge>
-                                    ) : (
-                                        <Badge variant="secondary">Unknown</Badge>
-                                    )}
-                                </th>
-                                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                                    {category.obj_status === "publish" ? (
-                                        <Badge className="bg-green-500 text-white hover:bg-green-600">Publish</Badge>
-                                    ) : (
-                                        <Badge className="bg-gray-500 text-white hover:bg-gray-600">Unpublish</Badge>
-                                    )}
-                                </th>
-                                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                                    <Popover>
-                                        <PopoverTrigger>
-                                            <EllipsisVertical className="cursor-pointer" />
-                                        </PopoverTrigger>
-                                        <PopoverContent className='w-[10rem]'>
-                                            <button
-                                                onClick={() => router.visit(`/content/product_category/${category.id}/edit`)}
-                                                className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
-                                            >
-                                                <Pencil className="w-4 h-4" />
-                                                <span>Edit</span>
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(category)}
-                                                className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                                <span>Delete</span>
-                                            </button>
-                                            <button
-                                                onClick={() => handleQuickView(category)}
-                                                className="flex items-center gap-2 w-full hover:bg-zinc-800 px-2 py-1 rounded-md"
-                                            >
-                                                <Eye className="w-4 h-4" />
-                                                <span>Quick view</span>
-                                            </button>
-                                        </PopoverContent>
-                                    </Popover>
-                                </th>
-                            </tr>
-                        ))
-                    ): (
-                        <tr>
-                            <td colSpan={4} className="text-center py-4">No product category found.</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            <div className='min-w-[1000px] w-full'>
+                <div className='flex bg-gray-50 dark:bg-gray-700 text-xs font-semibold'>
+                {table.getHeaderGroups().map(headerGroup => (
+                    <div key={headerGroup.id} className="flex w-full">
+                    {headerGroup.headers.map(header => (
+                        <div key={header.id} className='px-6 py-3 w-full'>
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        </div>
+                    ))}
+                    </div>
+                ))}
+                </div>
+
+                <div className='divide-y'>
+                {table.getRowModel().rows.map(row => (
+                    <div key={row.id} className='flex bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white'>
+                    {row.getVisibleCells().map(cell => (
+                        <div key={cell.id} className='px-6 py-4 w-full'>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </div>
+                    ))}
+                    </div>
+                ))}
+                </div>
+            </div>
             <div className="mt-6">
                 <Pagination>
                     <PaginationContent>
