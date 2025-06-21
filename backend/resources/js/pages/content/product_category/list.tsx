@@ -28,6 +28,15 @@ import {
   SheetHeader,
   SheetTitle
 } from "@/components/ui/sheet";
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { 
     EllipsisVertical,
     Pencil,
@@ -44,7 +53,7 @@ import {
   SortingState,
   getSortedRowModel,
   getFilteredRowModel
-} from '@tanstack/react-table'
+} from '@tanstack/react-table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -82,6 +91,9 @@ const ProductCategoryListPage = () => {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [globalFilter, setGlobalFilter] = useState('');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [filterName, setFilterName] = useState('');
+    const [filterLanguage, setFilterLanguage] = useState('');
 
     const { productCategory } = usePage().props as unknown as {
         productCategory: PaginatedProductCategory;
@@ -314,6 +326,22 @@ const ProductCategoryListPage = () => {
         getFilteredRowModel: getFilteredRowModel(),
     });
 
+    const handleFilter = () => {
+        setIsFilterOpen(true);
+    };
+
+    const applyFilter = () => {
+        setIsFilterOpen(false);
+        router.visit('/content/product_category', {
+            data: {
+                name: filterName,
+                obj_lang: filterLanguage
+            },
+            preserveScroll: true,
+            preserveState: true,
+        });
+    };
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head title="Product category" />
@@ -325,7 +353,10 @@ const ProductCategoryListPage = () => {
                 onChange={e => setGlobalFilter(e.target.value)}
                 className="border border-gray-300 rounded px-3 py-2 w-full max-w-xs"
             />
-            <Button onClick={() => router.visit('/content/product_category/form')}>Create</Button>
+            <div className='flex flex-row gap-2'>
+                <Button onClick={() => handleFilter()}>Filter</Button>
+                <Button onClick={() => router.visit('/content/product_category/form')}>Create</Button>
+            </div>
         </div>
         <div className='relative w-full overflow-x-auto p-4'>
             <div className='min-w-[1000px] w-full'>
@@ -380,7 +411,7 @@ const ProductCategoryListPage = () => {
             <SheetHeader>
                 <SheetTitle>{selectedProductCategory?.name}</SheetTitle>
                 <SheetDescription>
-                Quick view of product details
+                    Quick view of product details
                 </SheetDescription>
             </SheetHeader>
             <div className="mt-4 mx-4 space-y-4">
@@ -389,6 +420,43 @@ const ProductCategoryListPage = () => {
                 <p><strong>Language:</strong> {selectedProductCategory?.obj_lang}</p>
                 <p><strong>Created by:</strong> {selectedProductCategory?.created_by}</p>
                 <p><strong>Created at:</strong> {selectedProductCategory?.created_at}</p>
+            </div>
+            </SheetContent>
+        </Sheet>
+        <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+            <SheetHeader>
+                <SheetTitle>Filter</SheetTitle>
+                <SheetDescription>
+                    Filter product category data
+                </SheetDescription>
+            </SheetHeader>
+            <div className="mt-4 mx-4 space-y-4">
+                <div className='flex flex-col space-y-2'>
+                    <Label>Name</Label>
+                    <Input 
+                        type='text'
+                        id='name'
+                        value={filterName}
+                        onChange={e => setFilterName(e.target.value)}
+                    />
+                </div>
+                <div className="flex flex-col space-y-2">
+                    <Label>Language</Label>
+                    <Select
+                        value={filterLanguage}
+                        onValueChange={value => setFilterLanguage(value)}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="tha">THA</SelectItem>
+                            <SelectItem value="eng">ENG</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <Button onClick={() => applyFilter()}>Apply</Button>
             </div>
             </SheetContent>
         </Sheet>

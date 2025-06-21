@@ -28,9 +28,17 @@ class ProductCategoryController extends Controller
             "product_category.obj_lang", 
             "product_category.obj_status")
         ->leftJoin('users as created_users', 'product_category.created_by', '=', 'created_users.id')
-        ->leftJoin('users as updated_users', 'product_category.updated_by', '=', 'updated_users.id')
-        ->orderBy('product_category.created_at', 'desc')
-        ->paginate(15);
+        ->leftJoin('users as updated_users', 'product_category.updated_by', '=', 'updated_users.id');
+
+        if ($request->filled('name')) {
+            $product_category->where('product_category.name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('obj_lang')) {
+            $product_category->where('product_category.obj_lang', $request->obj_lang);
+        }
+
+        $product_category = $product_category->orderBy('product_category.created_at', 'desc')->paginate(15)->withQueryString();
 
         return Inertia::render('content/product_category/list', [
             'productCategory' => $product_category,
