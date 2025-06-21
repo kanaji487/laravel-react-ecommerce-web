@@ -101,7 +101,7 @@ const ProductCategoryListPage = () => {
 
     const handlePageChange = (url: string | null) => {
         if (url) {
-        router.visit(url);
+            router.visit(url);
         }
     };
 
@@ -363,25 +363,33 @@ const ProductCategoryListPage = () => {
                 <div className='flex bg-gray-50 dark:bg-gray-700 text-xs font-semibold'>
                 {table.getHeaderGroups().map(headerGroup => (
                     <div key={headerGroup.id} className="flex w-full">
-                    {headerGroup.headers.map(header => (
-                        <div key={header.id} className='px-6 py-3 w-full'>
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                        </div>
-                    ))}
+                        {headerGroup.headers.map(header => (
+                            <div key={header.id} className='px-6 py-3 w-full'>
+                                {flexRender(header.column.columnDef.header, header.getContext())}
+                            </div>
+                        ))}
                     </div>
                 ))}
                 </div>
 
                 <div className='divide-y'>
-                {table.getRowModel().rows.map(row => (
-                    <div key={row.id} className='flex bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white'>
-                    {row.getVisibleCells().map(cell => (
-                        <div key={cell.id} className='px-6 py-4 w-full'>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {table.getRowModel().rows.length === 0 ? (
+                        <div className="flex bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white">
+                            <div className="px-6 py-4 w-full text-center text-gray-500">
+                                No data found.
+                            </div>
                         </div>
-                    ))}
-                    </div>
-                ))}
+                        ) : (
+                        table.getRowModel().rows.map(row => (
+                            <div key={row.id} className='flex bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white'>
+                            {row.getVisibleCells().map(cell => (
+                                <div key={cell.id} className='px-6 py-4 w-full'>
+                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </div>
+                            ))}
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
             <div className="mt-6">
