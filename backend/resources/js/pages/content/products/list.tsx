@@ -54,6 +54,7 @@ type Product = {
   name: string;
   description: string;
   price: number;
+  category_name: string;
   created_at: string;
   created_by: string;
   updated_at: string;
@@ -132,6 +133,7 @@ const ProductsListPage = () => {
                 <th scope='col' className='px-6 py-3'>Name</th>
                 <th scope='col' className='px-6 py-3'>Description</th>
                 <th scope='col' className='px-6 py-3'>Price</th>
+                <th scope='col' className='px-6 py-3'>Category</th>
                 <th scope='col' className='px-6 py-3'>Created at</th>
                 <th scope='col' className='px-6 py-3'>Created by</th>
                 <th scope='col' className='px-6 py-3'>Updated at</th>
@@ -165,6 +167,9 @@ const ProductsListPage = () => {
                     </th>
                     <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
                       {product.price}
+                    </th>
+                    <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {product.category_name}
                     </th>
                     <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
                       {product.created_at}

@@ -32,14 +32,16 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
-const ProductEditPage = ({ product }: { product: any }) => {
+const ProductEditPage = ({ product, category }: { product: any, category: Array<{ id: number; name: string }> }) => {
     const { data, setData, post, processing, errors } = useForm({
         name: product.name || '',
         description: product.description || '',
         price: product.price || '',
         main_image: product.main_image || '',
         obj_lang: product.obj_lang || '',
-        obj_status: product.obj_status || ''
+        obj_status: product.obj_status || '',
+        category_id: product.category_id || '',
+        category_name: category.find(cat => cat.id === product.category_id)?.name || ''
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -104,6 +106,27 @@ const ProductEditPage = ({ product }: { product: any }) => {
                         <p className="text-sm text-red-500 mt-1">{errors.description}</p>
                     )}
                 </div>
+                <div>
+                    <Label htmlFor="category">Category</Label>
+                    <Select
+                        value={String(data.category_id)}
+                        onValueChange={(value) => setData('category_id', value)}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                        {category.map((cat) => (
+                            <SelectItem key={cat.id} value={String(cat.id)}>
+                            {cat.name}
+                            </SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    {errors.category_id && (
+                        <p className="text-sm text-red-500 mt-1">{errors.category_id}</p>
+                    )}
+                    </div>
                 <div>
                     <Label htmlFor='price'>Price</Label>
                     <Input 

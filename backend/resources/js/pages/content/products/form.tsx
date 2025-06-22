@@ -132,8 +132,8 @@ const ProductsFormPage = () => {
                             ))}
                         </SelectContent>
                     </Select>
-                    {errors.category && (
-                        <p className="text-sm text-red-500 mt-1">{errors.category}</p>
+                    {errors.category_id && (
+                        <p className="text-sm text-red-500 mt-1">{errors.category_id}</p>
                     )}
                 </div>
 

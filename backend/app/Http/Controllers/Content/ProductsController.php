@@ -23,7 +23,8 @@ class ProductsController extends Controller
             "products.main_image", 
             "products.name", 
             "products.description", 
-            "products.price", 
+            "products.price",
+            "category.name as category_name",
             "created_users.name as created_by",
             "updated_users.name as updated_by", 
             "products.created_at", 
@@ -33,6 +34,7 @@ class ProductsController extends Controller
         )
         ->leftJoin('users as created_users', 'products.created_by', '=', 'created_users.id')
         ->leftJoin('users as updated_users', 'products.updated_by', '=', 'updated_users.id')
+        ->leftJoin('product_category as category', 'products.category_id', '=', 'category.id')
         ->orderBy('products.created_at', 'desc')
         ->paginate(15);
 
@@ -78,9 +80,11 @@ class ProductsController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
+        $category = DB::table("product_category")->select("id", "name")->get();
 
         return Inertia::render('content/products/edit', [
-            'product' => $product
+            'product' => $product,
+            'category' => $category
         ]);
     }
 

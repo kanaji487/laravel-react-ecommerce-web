@@ -17,9 +17,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const ContentListPage = () => {
-    const handleClick = () => {
-        router.visit("/content/products")
-    }
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
