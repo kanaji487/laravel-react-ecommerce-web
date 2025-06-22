@@ -43,7 +43,9 @@ class ProductsController extends Controller
 
     public function form(Request $request): Response
     {
-        return Inertia::render('content/products/form');
+        $category = DB::table("product_category")->select("id", "name")->get();
+
+        return Inertia::render('content/products/form', ['category' => $category]);
     }
 
     public function create(Request $request)
@@ -52,6 +54,7 @@ class ProductsController extends Controller
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'category_id' => 'required|exists:product_category,id',
             'price' => 'nullable|numeric',
             'obj_lang' => 'nullable|string|max:10',
             'obj_status' => 'nullable|string|max:50'

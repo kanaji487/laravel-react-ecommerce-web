@@ -2,7 +2,8 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { 
     Head, 
-    useForm 
+    useForm, 
+    usePage
 } from '@inertiajs/react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -31,11 +32,21 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
+type Category = {
+    id: number;
+    name: string;
+}
+
 const ProductsFormPage = () => {
+    const { category } = usePage().props as unknown as {
+        category: Category[];
+    };
+
     const { data, setData, post, processing, errors } = useForm<{
         main_image: File | null;
         name: string;
         description: string;
+        category_id: string;
         price: string;
         obj_lang: string;
         obj_status: string;
@@ -43,6 +54,7 @@ const ProductsFormPage = () => {
         main_image: null,
         name: '',
         description: '',
+        category_id: '',
         price: '',
         obj_lang: '',
         obj_status: ''
@@ -100,6 +112,28 @@ const ProductsFormPage = () => {
                     />
                     {errors.description && (
                         <p className="text-sm text-red-500 mt-1">{errors.description}</p>
+                    )}
+                </div>
+
+                <div className="flex flex-col space-y-2">
+                    <Label htmlFor="category">Category</Label>
+                    <Select
+                        value={data.category_id}
+                        onValueChange={(value) => setData('category_id', value)}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {category.map((cat) => (
+                                <SelectItem key={cat.id} value={String(cat.id)}>
+                                    {cat.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    {errors.category && (
+                        <p className="text-sm text-red-500 mt-1">{errors.category}</p>
                     )}
                 </div>
 
