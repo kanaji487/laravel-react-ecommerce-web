@@ -270,9 +270,6 @@ const ProductsListPage = () => {
         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
           <SheetHeader>
             <SheetTitle>{selectedProduct?.name}</SheetTitle>
-            <SheetDescription>
-              Quick view of product details
-            </SheetDescription>
           </SheetHeader>
           <div className="mt-4 mx-4 space-y-4">
             {selectedProduct?.main_image && (
@@ -283,6 +280,7 @@ const ProductsListPage = () => {
               />
             )}
             <p><strong>Description:</strong> {selectedProduct?.description}</p>
+            <p><strong>Category:</strong> {selectedProduct?.category_name}</p>
             <p><strong>Price:</strong> ${selectedProduct?.price}</p>
             <p><strong>Status:</strong> {selectedProduct?.obj_status}</p>
             <p><strong>Language:</strong> {selectedProduct?.obj_lang}</p>

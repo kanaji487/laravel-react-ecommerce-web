@@ -118,7 +118,7 @@ const ProductEditPage = ({ product, category }: { product: any, category: Array<
                         <SelectContent>
                         {category.map((cat) => (
                             <SelectItem key={cat.id} value={String(cat.id)}>
-                            {cat.name}
+                                {cat.name}
                             </SelectItem>
                         ))}
                         </SelectContent>
@@ -126,7 +126,7 @@ const ProductEditPage = ({ product, category }: { product: any, category: Array<
                     {errors.category_id && (
                         <p className="text-sm text-red-500 mt-1">{errors.category_id}</p>
                     )}
-                    </div>
+                </div>
                 <div>
                     <Label htmlFor='price'>Price</Label>
                     <Input 
