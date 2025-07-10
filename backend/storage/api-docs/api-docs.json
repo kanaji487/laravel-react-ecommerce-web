@@ -54,6 +54,37 @@
                 }
             }
         },
+        "/api/products/search-by-category": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Search products by category name",
+                "operationId": "2d8b1d1c1a0b50f773b720a2321ad5f2",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Category name to filter products",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of products matching the category"
+                    },
+                    "400": {
+                        "description": "Category name is required"
+                    },
+                    "404": {
+                        "description": "No products found for this category"
+                    }
+                }
+            }
+        },
         "/api/user/list": {
             "get": {
                 "tags": [

@@ -9,5 +9,6 @@ use App\Http\Controllers\Api\ProductCategoryController;
 Route::get('/user/list', [UserController::class, 'list']);
 
 Route::get('/products/list', [ProductsController::class, 'list']);
+Route::get('/products/search-by-category', [ProductsController::class, 'searchByCategory']);
 
 Route::get('/product_category/list', [ProductCategoryController::class, 'list']);
